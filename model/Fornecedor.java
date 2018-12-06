@@ -1,10 +1,10 @@
 package model;
 
-public class Fornecedor extends Pessoa{
+public class Fornecedor extends Cliente{
 	String cnpj;
 	String nomeContato;
 	
-	public Fornecedor(int codigo, String nome, String telefone, String email, String cnpj, String nomeContato)
+	public Fornecedor(String codigo, String nome, String telefone, String email, String cnpj, String nomeContato)
 	{
 		super(codigo, nome, telefone, email);
 		this.cnpj = cnpj;
