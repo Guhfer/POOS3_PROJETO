@@ -1,7 +1,5 @@
 package model;
 
-//import java.util.Date;
-
 public class CartaoCredito {
 	
 	private String nomeTitular;
@@ -10,7 +8,6 @@ public class CartaoCredito {
 	private int anoV;
 	private String cpfTitular;
 	private int codAcesso;
-	//private Date data;
 	
 	public CartaoCredito(String nomeTitular, String numeroCartao, int mesV, int anoV, String cpfTitular, int codAcesso) {
 		this.nomeTitular = nomeTitular;

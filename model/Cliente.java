@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Cliente {
 	
 	private String nome;
@@ -7,7 +10,7 @@ public abstract class Cliente {
 	private String senha;
 	private String usuario;
 	private String telefone;
-	private ArrayGeneric<Endereco> listEnd;
+	private List<Endereco> listEnd;
 
 	public Cliente(String nome, String email, String senha, String usuario, String telefone) {
 		
@@ -28,7 +31,7 @@ public abstract class Cliente {
 	
 	public boolean addEndereco (String rua, String bairro, String cidade, String estado, int numero, int cep, String complemento) {
 		
-		listEnd = new ArrayGeneric<>();
+		listEnd = new ArrayList<>();
 		Endereco end = new Endereco(rua, bairro, cidade, estado, numero, cep, complemento);
 		
 		return listEnd.add(end);
@@ -36,7 +39,7 @@ public abstract class Cliente {
 	
 	public boolean addEndereco (String rua, String bairro, String cidade, String estado, int numero, int cep) {
 		
-		listEnd = new ArrayGeneric<>();
+		listEnd = new ArrayList<>();
 		Endereco end = new Endereco(rua, bairro, cidade, estado, numero, cep);
 		
 		return listEnd.add(end);
@@ -61,6 +64,19 @@ public abstract class Cliente {
 	public String getTelefone() {
 		return telefone;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		boolean iguais = false;
+		
+		if(obj != null && obj instanceof Cliente) {
+			if(this.usuario.equalsIgnoreCase(((Cliente)obj).usuario))
+				iguais = true;
+		}
+		return iguais;
+	}
+	
 	
 	@Override
 	public String toString() {

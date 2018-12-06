@@ -4,12 +4,15 @@ public class Fornecedor extends Cliente{
 	String cnpj;
 	String nomeContato;
 	
+<<<<<<< HEAD
 	public Fornecedor(String codigo, String nome, String telefone, String email, String cnpj, String nomeContato)
+=======
+	public Fornecedor(String nome, String telefone, String email, String cnpj, String nomeContato, String usuario, String senha)
+>>>>>>> Implementando Classe Dao
 	{
-		super(codigo, nome, telefone, email);
+		super(nome, email, senha, usuario, telefone);
 		this.cnpj = cnpj;
 		this.nomeContato = nomeContato;
-		
 	}
 
 	public String getCnpj() {
