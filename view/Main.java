@@ -1,14 +1,18 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Vector;
 
-import model.Cliente;
 import model.ClientePFisica;
 import model.ClientePJuridica;
-import DAO.ClienteDao;
+import model.Fornecedor;
+import model.Insumo;
+import model.Produto;
 
 public class Main {
-	
+	final static int MAXFORN = 2;
+	final static int MAXINS = 2;
 	
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
@@ -21,26 +25,176 @@ public class Main {
 			System.out.println("----------------------------");
 			System.out.println("1- Cadastrar pessoa física");
 			System.out.println("2- Cadastrar pessoa Jurídica");
-			System.out.println("3- Sair");
+			System.out.println("3- Cadastrar produto/Fornecedor");
+			System.out.println("4- Cadastrar produto/Insumo");
+			System.out.println("5- Relatório");
+			System.out.println("6- Sair");
 			System.out.println("----------------------------");
 			System.out.print("Opção:");
-			selecao = scan.nextInt();
+			try {
+				selecao = scan.nextInt();
+			} catch (java.util.InputMismatchException e) {
+				System.out.println("Oops! Caractere não aceito!");
+				selecao = 100;
+				scan.nextLine();
+			}
 			
 			switch(selecao) {
-				case 1: cadastrarPFisica();
+				case 1: Main.cadastrarPFisica();
 						break;
 				
 				case 2: cadastrarPJuridica();
 						break;
 				
-				case 3: System.out.println("Saindo...");
+				case 3: cadastrarProdutoForn();
+						break;
+				
+				case 4: cadastrarProdutoIns();
+						break;
+				
+				case 5: geraRelatorio();
+						break;
+				
+				case 6: System.out.println("Saindo...");
 						break;
 				
 				default: System.out.println("Opção inválida!!");
 			}
 			
-		}while(selecao != 3);
+		}while(selecao != 6);
 		
+	}
+
+	private static void geraRelatorio() {
+		dao.ProdutoDao.getInstance().gerarRelatorio();
+	}
+
+	private static void cadastrarProdutoIns() {
+		Scanner input = new Scanner(System.in);
+		Insumo[] insumos = new Insumo[MAXINS];
+		int count = 0;
+		char desejo = 'N';
+		
+		System.out.println("-------------------------------");
+		System.out.println("--------Sobre o Produto--------");
+		System.out.println("-------------------------------");
+		
+		System.out.print("Nome: ");
+		String nomeProd = input.nextLine();
+		
+		System.out.print("Preço: ");
+		Double preco = input.nextDouble();
+		
+		input.nextLine();
+		System.out.println("-------------------------------");
+		System.out.println("-------Sobre o Fornecedor------");
+		System.out.println("-------------------------------");
+		
+		System.out.print("Preço sugerido pelo produto: ");
+		double precof = input.nextDouble();
+		
+		System.out.print("Nome: ");
+		String nome = input.nextLine();
+		
+		System.out.print("Telefone: ");
+		String tel = input.nextLine();
+		
+		System.out.print("Email: ");
+		String mail = input.nextLine();
+		
+		System.out.print("CNPJ: ");
+		String cnpj = input.nextLine();
+		
+		System.out.print("Nome de contato: ");
+		String nomeContato = input.nextLine();
+		
+		System.out.print("Usuário: ");
+		String user = input.nextLine();
+		
+		System.out.print("Senha: ");
+		String senha = input.nextLine();
+		
+		Fornecedor sup = new Fornecedor(precof, nome, tel, mail, cnpj, nomeContato, user, senha);
+		
+		do {
+		System.out.println("-------------------------------");
+		System.out.println("---------Sobre o Insumo--------");
+		System.out.println("-------------------------------");
+		
+		System.out.print("Nome do Insumo: ");
+		String nomeIns = input.nextLine();
+		
+		insumos[count] = new Insumo(nomeIns, sup);
+		
+		System.out.print("Deseja inserir mais insumos? S/N: ");
+		desejo = input.next().charAt(0);
+		input.nextLine();
+		count++;
+		}while(desejo == 'S' || desejo == 's');
+				
+		Produto prod = new Produto(nomeProd, preco, insumos);
+		
+		dao.ProdutoDao.getInstance().inserirProduto(prod);
+	}
+
+	private static void cadastrarProdutoForn() {
+		Scanner input = new Scanner(System.in);
+		Fornecedor[] fornecedores = new Fornecedor[MAXFORN];
+		int count = 0;
+		char desejo = 'N';
+		
+		do {
+			System.out.println("-------------------------------");
+			System.out.println("-----Sobre os Fornecedores-----");
+			System.out.println("-------------------------------");
+			
+			System.out.print("Preço sugerido pelo produto: ");
+			double precof = input.nextDouble();
+			
+			input.nextLine();
+			System.out.print("Nome: ");
+			String nome = input.nextLine();
+			
+			System.out.print("Telefone: ");
+			String tel = input.nextLine();
+			
+			System.out.print("Email: ");
+			String mail = input.nextLine();
+			
+			System.out.print("CNPJ: ");
+			String cnpj = input.nextLine();
+			
+			System.out.print("Nome de contato: ");
+			String nomeContato = input.nextLine();
+			
+			System.out.print("Usuário: ");
+			String user = input.nextLine();
+			
+			System.out.print("Senha: ");
+			String senha = input.nextLine();
+			
+			fornecedores[count] = new Fornecedor(nome, tel, mail, cnpj, nomeContato, user, senha);
+			 
+			System.out.print("Deseja inserir mais fornecedores? S/N: ");
+			desejo = input.next().charAt(0);
+			input.nextLine();
+			count++;
+			
+		}while(desejo == 'S' || desejo == 's');
+		
+		System.out.println("-------------------------------");
+		System.out.println("--------Sobre o Produto--------");
+		System.out.println("-------------------------------");
+		
+		System.out.print("Nome: ");
+		String nomeProd = input.nextLine();
+		
+		System.out.print("Preço: ");
+		Double preco = input.nextDouble();
+				
+		Produto prod = new Produto(nomeProd, preco, fornecedores);
+		
+		dao.ProdutoDao.getInstance().inserirProduto(prod);
 	}
 
 	private static void cadastrarPJuridica() {
@@ -98,7 +252,7 @@ public class Main {
 		input.nextLine();
 				
 		pj.addEndereco(rua, bairro, cid, stado, nro, cep);
-		DAO.ClienteDao.getInstance().inserirCliente(pj);
+		dao.ClienteDao.getInstance().inserirCliente(pj);
 	}
 
 	private static void cadastrarPFisica() {
@@ -183,44 +337,7 @@ public class Main {
 		input.nextLine();
 		
 		pf.addCartaoCredito(titular, numCart, mesV, anoV, cpfTit, codAcess);
-		DAO.ClienteDao.getInstance().inserirCliente(pf);
+		dao.ClienteDao.getInstance().inserirCliente(pf);
 	}
 }
 
-
-/*
-
-MAIN ANTIGO
-
-package view;
-
-import model.ClientePFisica;
-import model.ClientePJuridica;
-import model.ListaCliente;
-
-public class Main {
-	
-	
-	public static void main(String[] args) {
-		
-		ListaCliente lista = new ListaCliente();
-		
-		ClientePFisica cf1 = new ClientePFisica("Gustavo", "Fernandes", "55486525153" , "fernandes.guga@hotmail.com",
-				"123456", "guhfer", "16912345678");
-		
-		ClientePJuridica cp1 = new ClientePJuridica("Kaique", "KVassouras", "56958423651258", "kaique@kvassouras.com",
-				"kvassouras2018", "kvassouras", "16992558459");
-		
-		lista.clientes.add(cf1);
-		lista.clientes.add(cp1);
-		
-		cf1.addEndereco("Gonçalves Dias", "Centro", "Araraquara", "São Paulo", 777, 14854585);
-		cp1.addEndereco("Mariano Dultra", "Pinheiros", "Araraquara", "SP", 1458, 14852524, "Andar 5, apt 25");
-		
-		cf1.addCartaoCredito("Renan Junior", "1548562659854563", 5, 2023, "65936582965", 123);
-		
-		System.out.println(lista.toString());
-	
-	}
-}
-*/

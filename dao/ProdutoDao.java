@@ -62,6 +62,17 @@ public class ProdutoDao {
 		
 		return ret;
 	}
+	
+	//EU PRECISO DESSA FUNÇÃO
+	//Ela tá chamada lá no main
+	public void gerarRelatorio() {
+		System.out.print("Produtos inseridos: \n");
+		for(int i = 0; i<getSize(); i++) {
+			System.out.print(produtos.get(i).toString());
+			System.out.print("\n");
+			System.out.print("----------------------------\n");
+		}
+	}
 }
 
 
